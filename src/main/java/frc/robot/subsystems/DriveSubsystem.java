@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -13,35 +14,38 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.WPIUtilJNI;
-import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 import frc.utils.SwerveUtils;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 
 public class DriveSubsystem extends SubsystemBase {
   // Create MAXSwerveModules
-  private final MAXSwerveModule m_frontLeft = new MAXSwerveModule(
-      DriveConstants.kFrontLeftDrivingCanId,
-      DriveConstants.kFrontLeftTurningCanId,
-      DriveConstants.kFrontLeftChassisAngularOffset);
+  private final MAXSwerveModule m_frontLeft =
+      new MAXSwerveModule(
+          DriveConstants.kFrontLeftDrivingCanId,
+          DriveConstants.kFrontLeftTurningCanId,
+          DriveConstants.kFrontLeftChassisAngularOffset);
 
-  private final MAXSwerveModule m_frontRight = new MAXSwerveModule(
-      DriveConstants.kFrontRightDrivingCanId,
-      DriveConstants.kFrontRightTurningCanId,
-      DriveConstants.kFrontRightChassisAngularOffset);
+  private final MAXSwerveModule m_frontRight =
+      new MAXSwerveModule(
+          DriveConstants.kFrontRightDrivingCanId,
+          DriveConstants.kFrontRightTurningCanId,
+          DriveConstants.kFrontRightChassisAngularOffset);
 
-  private final MAXSwerveModule m_rearLeft = new MAXSwerveModule(
-      DriveConstants.kRearLeftDrivingCanId,
-      DriveConstants.kRearLeftTurningCanId,
-      DriveConstants.kBackLeftChassisAngularOffset);
+  private final MAXSwerveModule m_rearLeft =
+      new MAXSwerveModule(
+          DriveConstants.kRearLeftDrivingCanId,
+          DriveConstants.kRearLeftTurningCanId,
+          DriveConstants.kBackLeftChassisAngularOffset);
 
-  private final MAXSwerveModule m_rearRight = new MAXSwerveModule(
-      DriveConstants.kRearRightDrivingCanId,
-      DriveConstants.kRearRightTurningCanId,
-      DriveConstants.kBackRightChassisAngularOffset);
+  private final MAXSwerveModule m_rearRight =
+      new MAXSwerveModule(
+          DriveConstants.kRearRightDrivingCanId,
+          DriveConstants.kRearRightTurningCanId,
+          DriveConstants.kBackRightChassisAngularOffset);
 
   // The gyro sensor
   private final AHRS ahrs = new AHRS(SPI.Port.kMXP);
@@ -58,15 +62,16 @@ public class DriveSubsystem extends SubsystemBase {
   private Field2d m_field = new Field2d();
 
   // Odometry class for tracking robot pose
-  SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
-      DriveConstants.kDriveKinematics,
-      ahrs.getRotation2d(),
-      new SwerveModulePosition[] {
-          m_frontLeft.getPosition(),
-          m_frontRight.getPosition(),
-          m_rearLeft.getPosition(),
-          m_rearRight.getPosition()
-      });
+  SwerveDriveOdometry m_odometry =
+      new SwerveDriveOdometry(
+          DriveConstants.kDriveKinematics,
+          ahrs.getRotation2d(),
+          new SwerveModulePosition[] {
+            m_frontLeft.getPosition(),
+            m_frontRight.getPosition(),
+            m_rearLeft.getPosition(),
+            m_rearRight.getPosition()
+          });
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
@@ -79,10 +84,10 @@ public class DriveSubsystem extends SubsystemBase {
     m_odometry.update(
         ahrs.getRotation2d(),
         new SwerveModulePosition[] {
-            m_frontLeft.getPosition(),
-            m_frontRight.getPosition(),
-            m_rearLeft.getPosition(),
-            m_rearRight.getPosition()
+          m_frontLeft.getPosition(),
+          m_frontRight.getPosition(),
+          m_rearLeft.getPosition(),
+          m_rearRight.getPosition()
         });
     m_field.setRobotPose(m_odometry.getPoseMeters());
     SmartDashboard.putNumber("Gyro", ahrs.getAngle());
@@ -106,10 +111,10 @@ public class DriveSubsystem extends SubsystemBase {
     m_odometry.resetPosition(
         ahrs.getRotation2d(),
         new SwerveModulePosition[] {
-            m_frontLeft.getPosition(),
-            m_frontRight.getPosition(),
-            m_rearLeft.getPosition(),
-            m_rearRight.getPosition()
+          m_frontLeft.getPosition(),
+          m_frontRight.getPosition(),
+          m_rearLeft.getPosition(),
+          m_rearRight.getPosition()
         },
         pose);
   }
@@ -117,14 +122,14 @@ public class DriveSubsystem extends SubsystemBase {
   /**
    * Method to drive the robot using joystick info.
    *
-   * @param xSpeed        Speed of the robot in the x direction (forward).
-   * @param ySpeed        Speed of the robot in the y direction (sideways).
-   * @param rot           Angular rate of the robot.
-   * @param fieldRelative Whether the provided x and y speeds are relative to the
-   *                      field.
-   * @param rateLimit     Whether to enable rate limiting for smoother control.
+   * @param xSpeed Speed of the robot in the x direction (forward).
+   * @param ySpeed Speed of the robot in the y direction (sideways).
+   * @param rot Angular rate of the robot.
+   * @param fieldRelative Whether the provided x and y speeds are relative to the field.
+   * @param rateLimit Whether to enable rate limiting for smoother control.
    */
-  public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative, boolean rateLimit) {
+  public void drive(
+      double xSpeed, double ySpeed, double rot, boolean fieldRelative, boolean rateLimit) {
 
     System.out.println(rot);
 
@@ -142,18 +147,21 @@ public class DriveSubsystem extends SubsystemBase {
       if (m_currentTranslationMag != 0.0) {
         directionSlewRate = Math.abs(DriveConstants.kDirectionSlewRate / m_currentTranslationMag);
       } else {
-        directionSlewRate = 500.0; // some high number that means the slew rate is effectively instantaneous
+        directionSlewRate =
+            500.0; // some high number that means the slew rate is effectively instantaneous
       }
 
       double currentTime = WPIUtilJNI.now() * 1e-6;
       double elapsedTime = currentTime - m_prevTime;
       double angleDif = SwerveUtils.AngleDifference(inputTranslationDir, m_currentTranslationDir);
       if (angleDif < 0.45 * Math.PI) {
-        m_currentTranslationDir = SwerveUtils.StepTowardsCircular(m_currentTranslationDir, inputTranslationDir,
-            directionSlewRate * elapsedTime);
+        m_currentTranslationDir =
+            SwerveUtils.StepTowardsCircular(
+                m_currentTranslationDir, inputTranslationDir, directionSlewRate * elapsedTime);
         m_currentTranslationMag = m_magLimiter.calculate(inputTranslationMag);
       } else if (angleDif > 0.85 * Math.PI) {
-        if (m_currentTranslationMag > 1e-4) { // some small number to avoid floating-point errors with equality checking
+        if (m_currentTranslationMag
+            > 1e-4) { // some small number to avoid floating-point errors with equality checking
           // keep currentTranslationDir unchanged
           m_currentTranslationMag = m_magLimiter.calculate(0.0);
         } else {
@@ -161,8 +169,9 @@ public class DriveSubsystem extends SubsystemBase {
           m_currentTranslationMag = m_magLimiter.calculate(inputTranslationMag);
         }
       } else {
-        m_currentTranslationDir = SwerveUtils.StepTowardsCircular(m_currentTranslationDir, inputTranslationDir,
-            directionSlewRate * elapsedTime);
+        m_currentTranslationDir =
+            SwerveUtils.StepTowardsCircular(
+                m_currentTranslationDir, inputTranslationDir, directionSlewRate * elapsedTime);
         m_currentTranslationMag = m_magLimiter.calculate(0.0);
       }
       m_prevTime = currentTime;
@@ -182,11 +191,12 @@ public class DriveSubsystem extends SubsystemBase {
     double ySpeedDelivered = ySpeedCommanded * DriveConstants.kMaxSpeedMetersPerSecond;
     double rotDelivered = m_currentRotation * DriveConstants.kMaxAngularSpeed;
 
-    var swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(
-        fieldRelative
-            ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered,
-                ahrs.getRotation2d())
-            : new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered));
+    var swerveModuleStates =
+        DriveConstants.kDriveKinematics.toSwerveModuleStates(
+            fieldRelative
+                ? ChassisSpeeds.fromFieldRelativeSpeeds(
+                    xSpeedDelivered, ySpeedDelivered, rotDelivered, ahrs.getRotation2d())
+                : new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered));
     SwerveDriveKinematics.desaturateWheelSpeeds(
         swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond);
     m_frontLeft.setDesiredState(swerveModuleStates[0]);
@@ -195,9 +205,7 @@ public class DriveSubsystem extends SubsystemBase {
     m_rearRight.setDesiredState(swerveModuleStates[3]);
   }
 
-  /**
-   * Sets the wheels into an X formation to prevent movement.
-   */
+  /** Sets the wheels into an X formation to prevent movement. */
   public void setX() {
     m_frontLeft.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
     m_frontRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
