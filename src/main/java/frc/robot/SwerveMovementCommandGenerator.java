@@ -29,9 +29,7 @@ public class SwerveMovementCommandGenerator{
 	{thetaController.enableContinuousInput(-Math.PI, Math.PI);}
 	public static void setDrive(DriveSubsystem drive){SwerveMovementCommandGenerator.drive=drive;}
 	public static Command fromTrajectory(Trajectory trajectory){
-		return new ParallelCommandGroup(
-			new RunCommand(()->{drive.resetOdometry(trajectory.getInitialPose())}),
-			new SwerveControllerCommand(
+		return new SwerveControllerCommand(
                 trajectory,
                 drive::getPose, // Functional interface to feed supplier
                 DriveConstants.kDriveKinematics,
@@ -41,8 +39,7 @@ public class SwerveMovementCommandGenerator{
                 new PIDController(AutoConstants.kPYController, 0, 0),
                 thetaController,
                 drive::setModuleStates,
-                drive).andThen(() -> drive.drive(0, 0, 0, false, false))
-		);
+                drive).andThen(() -> drive.drive(0, 0, 0, false, false));
 	}
 	public static Command fromPoints(Pose2d start, List<Translation2d> interiorWaypoints, Pose2d end){
 		return fromTrajectory(TrajectoryGenerator.generateTrajectory(start,interiorWaypoints,end,config));
