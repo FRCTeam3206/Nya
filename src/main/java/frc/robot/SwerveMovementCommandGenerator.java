@@ -1,7 +1,11 @@
-package frc.robot.commands;
+package frc.robot;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
+
+import java.io.IOException;
+import java.util.List;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -24,7 +28,7 @@ public class SwerveMovementCommandGenerator{
                 AutoConstants.kMaxAccelerationMetersPerSecondSquared)
                 // Add kinematics to ensure max speed is actually obeyed
                 .setKinematics(DriveConstants.kDriveKinematics);
-	private static var thetaController=new ProfiledPIDController(
+	private static ProfiledPIDController thetaController=new ProfiledPIDController(
                 AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
 	{thetaController.enableContinuousInput(-Math.PI, Math.PI);}
 	public static void setDrive(DriveSubsystem drive){SwerveMovementCommandGenerator.drive=drive;}
