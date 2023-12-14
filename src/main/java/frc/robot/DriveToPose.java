@@ -12,7 +12,7 @@ public class DriveToPose extends CommandBase{
 		this.pose=pose;
 	}
 	double maxSpeed=.5;
-	double maxRot=2;
+	double maxRot=.5;
 	public void execute(){
 		double dx=drive.getPose().getX()-pose.getX();
 		double dy=drive.getPose().getY()-pose.getY();
