@@ -23,6 +23,8 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.DriveSubsystem;
+
+import java.io.IOException;
 import java.util.List;
 
 /*
@@ -123,12 +125,20 @@ public class RobotContainer {
         // return swerveControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0,
         // false, false));
         SwerveMovementCommandGenerator.setDrive(m_robotDrive);
-        return SwerveMovementCommandGenerator.fromPoints(new Pose2d(0, 0, new Rotation2d(0)),
-                // Pass through these two interior waypoints, making an 's' curve path
-                List.of(
-                        new Translation2d(1, -1),
-                        new Translation2d(2, 1)),
-                // End 3 meters straight ahead of where we started, facing forward
-                new Pose2d(3, 0, new Rotation2d(Math.PI / 2)));
+        // return SwerveMovementCommandGenerator.fromPoints(new Pose2d(0, 0, new
+        // Rotation2d(0)),
+        // // Pass through these two interior waypoints, making an 's' curve path
+        // List.of(
+        // new Translation2d(1, -1),
+        // new Translation2d(2, 1)),
+        // // End 3 meters straight ahead of where we started, facing forward
+        // new Pose2d(3, 0, new Rotation2d(Math.PI / 2)));
+        try {
+            return SwerveMovementCommandGenerator.fromJSON("paths/Flip.wpilib.json");
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
     }
 }
