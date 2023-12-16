@@ -60,7 +60,7 @@ public class SwerveMovementCommandGenerator{
 		return fromTrajectory(TrajectoryUtil.fromPathweaverJson(Filesystem.getDeployDirectory().toPath().resolve(path)));
 	}
 	public static Command fromJSONManual(String path) throws IOException{
-                System.out.println("Running what we want 6");
+		//System.out.println("Running what we want 6");
 		Pose2d start=null;
 		Pose2d finish=null;
 		ArrayList<Translation2d> waypoints=new ArrayList<>();
@@ -68,7 +68,7 @@ public class SwerveMovementCommandGenerator{
 		String input=Files.readString(Paths.get(path));
                 input=input.replaceAll(",", "");
                 Scanner scan=new Scanner(input);
-                for(int i=0;i<6;i++)System.out.println(scan.nextLine());
+                for(int i=0;i<6;i++)scan.nextLine();
                 boolean done=false;
                 while(scan.hasNextLine()){
                         double rotation=Double.parseDouble(scan.nextLine().substring(11));
@@ -86,15 +86,15 @@ public class SwerveMovementCommandGenerator{
                         if(first){
 				start=new Pose2d(x,y,new Rotation2d(rotation));
 				first=false;
-                                System.out.println(start);
+                //System.out.println(start);
 			}else if(!done){
 				//we know there are more points
 				waypoints.add(new Translation2d(x,y));
-                                System.out.println(new Translation2d(x,y));
+				//System.out.println(new Translation2d(x,y));
 			}else{
 				//there are no more numbers left, this is the last pose
 				finish=new Pose2d(x,y,new Rotation2d(rotation));
-                                System.out.println(finish);
+				//System.out.println(finish);
 			}
                 }
 		
@@ -108,28 +108,33 @@ public class SwerveMovementCommandGenerator{
 		ArrayList<Translation2d> waypoints=new ArrayList<>();
 		boolean first=true;
 		Scanner scan=new Scanner(new File(path));
-		while(scan.hasNextDouble()){
-			double x=scan.nextDouble();
-			double y=scan.nextDouble();
-			double tx=scan.nextDouble();
-			double ty=scan.nextDouble();
+		scan.nextLine();
+		while(scan.hasNextLine()){
+			Scanner lineScan=new Scanner(scan.nextLine()).useDelimiter(",");
+			double x=lineScan.nextDouble();
+			double y=lineScan.nextDouble();
+			double tx=lineScan.nextDouble();
+			double ty=lineScan.nextDouble();
 			double rotation;
-			if(Math.abs(tx)<1E-4){
+			if(Math.abs(tx)<Constants.EPSILON){
 				rotation=Math.PI/2;
 			}
 			rotation=Math.atan(ty/tx);
-			if(tx<-1E-4){
-				rotation*=-1;
+			if(tx<-Constants.EPSILON){
+				rotation+=Math.PI;
 			}
 			if(first){
 				start=new Pose2d(x,y,new Rotation2d(rotation));
+				//System.out.println(start);
 				first=false;
-			}else if(scan.hasNextDouble()){
+			}else if(scan.hasNextLine()){
 				//we know there are more points
 				waypoints.add(new Translation2d(x,y));
+				//System.out.println(new Translation2d(x,y));
 			}else{
 				//there are no more numbers left, this is the last pose
 				finish=new Pose2d(x,y,new Rotation2d(rotation));
+				//System.out.println(finish);
 			}
 		}
 		return fromPoints(start,waypoints,finish);
