@@ -32,6 +32,11 @@ public class SwerveMovementCommandGenerator{
                 AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
 	{thetaController.enableContinuousInput(-Math.PI, Math.PI);}
 	public static void setDrive(DriveSubsystem drive){SwerveMovementCommandGenerator.drive=drive;}
+        /**
+         * 
+         * @param trajectory The trajectory for the robot to follow.
+         * @return Swerve drive command from trajectory.
+         */
 	public static Command fromTrajectory(Trajectory trajectory){
 		return new SwerveControllerCommand(
                 trajectory,
