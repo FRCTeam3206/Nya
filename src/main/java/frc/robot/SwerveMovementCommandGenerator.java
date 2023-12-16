@@ -3,8 +3,16 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -51,5 +59,79 @@ public class SwerveMovementCommandGenerator{
 	public static Command fromJSON(String path) throws IOException{
 		return fromTrajectory(TrajectoryUtil.fromPathweaverJson(Filesystem.getDeployDirectory().toPath().resolve(path)));
 	}
-	
+	public static Command fromJSONManual(String path) throws IOException{
+                System.out.println("Running what we want 6");
+		Pose2d start=null;
+		Pose2d finish=null;
+		ArrayList<Translation2d> waypoints=new ArrayList<>();
+		boolean first=true;
+		String input=Files.readString(Paths.get(path));
+                input=input.replaceAll(",", "");
+                Scanner scan=new Scanner(input);
+                for(int i=0;i<6;i++)System.out.println(scan.nextLine());
+                boolean done=false;
+                while(scan.hasNextLine()){
+                        double rotation=Double.parseDouble(scan.nextLine().substring(11));
+                        scan.nextLine();
+                        scan.nextLine();
+                        double x=Double.parseDouble(scan.nextLine().substring(5));
+                        double y=Double.parseDouble(scan.nextLine().substring(5));
+                        for(int i=0;i<10;i++){
+                                if(!scan.hasNextLine()){
+                                        done=true;
+                                        break;
+                                }
+                                scan.nextLine();
+                        }
+                        if(first){
+				start=new Pose2d(x,y,new Rotation2d(rotation));
+				first=false;
+                                System.out.println(start);
+			}else if(!done){
+				//we know there are more points
+				waypoints.add(new Translation2d(x,y));
+                                System.out.println(new Translation2d(x,y));
+			}else{
+				//there are no more numbers left, this is the last pose
+				finish=new Pose2d(x,y,new Rotation2d(rotation));
+                                System.out.println(finish);
+			}
+                }
+		
+                
+                
+		return fromPoints(start,waypoints,finish);
+	}
+	public static Command fromPathFile(String path) throws IOException{
+		Pose2d start=null;
+		Pose2d finish=null;
+		ArrayList<Translation2d> waypoints=new ArrayList<>();
+		boolean first=true;
+		Scanner scan=new Scanner(new File(path));
+		while(scan.hasNextDouble()){
+			double x=scan.nextDouble();
+			double y=scan.nextDouble();
+			double tx=scan.nextDouble();
+			double ty=scan.nextDouble();
+			double rotation;
+			if(Math.abs(tx)<1E-4){
+				rotation=Math.PI/2;
+			}
+			rotation=Math.atan(ty/tx);
+			if(tx<-1E-4){
+				rotation*=-1;
+			}
+			if(first){
+				start=new Pose2d(x,y,new Rotation2d(rotation));
+				first=false;
+			}else if(scan.hasNextDouble()){
+				//we know there are more points
+				waypoints.add(new Translation2d(x,y));
+			}else{
+				//there are no more numbers left, this is the last pose
+				finish=new Pose2d(x,y,new Rotation2d(rotation));
+			}
+		}
+		return fromPoints(start,waypoints,finish);
+	}
 }

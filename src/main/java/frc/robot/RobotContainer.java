@@ -74,8 +74,8 @@ public class RobotContainer {
      * {@link JoystickButton}.
      */
     private void configureButtonBindings() {
-        new JoystickButton(m_driverController, Button.kR1.value)
-                .whileTrue(new RunCommand(() -> m_robotDrive.setX(), m_robotDrive));
+        // new JoystickButton(m_driverController, Button.kR1.value)
+        //         .whileTrue(new RunCommand(() -> m_robotDrive.setX(), m_robotDrive));
     }
 
     /**
@@ -134,7 +134,7 @@ public class RobotContainer {
         // // End 3 meters straight ahead of where we started, facing forward
         // new Pose2d(3, 0, new Rotation2d(Math.PI / 2)));
         try {
-            return SwerveMovementCommandGenerator.fromJSON("paths/Flip.wpilib.json");
+            return SwerveMovementCommandGenerator.fromJSONManual("C:/Users/tonyb/Documents/GitHub/Nya/src/main/deploy/paths/Flip.wpilib.json");
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
