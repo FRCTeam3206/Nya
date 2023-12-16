@@ -134,7 +134,8 @@ public class RobotContainer {
         // // End 3 meters straight ahead of where we started, facing forward
         // new Pose2d(3, 0, new Rotation2d(Math.PI / 2)));
         try {
-            return SwerveMovementCommandGenerator.fromJSONManual("C:/Users/tonyb/Documents/GitHub/Nya/src/main/deploy/paths/Flip.wpilib.json");
+                //return SwerveMovementCommandGenerator.fromJSONManual("pahts/Flip.wpilib.json");
+                return SwerveMovementCommandGenerator.fromPathFile("paths/Flip.path");
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
