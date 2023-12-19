@@ -8,7 +8,6 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
@@ -121,11 +120,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void resetDirection() {
-    resetOdometry(
-      new Pose2d(
-        getPose().getTranslation(), new Rotation2d(0.0)
-      )
-    );
+    resetOdometry(new Pose2d(getPose().getTranslation(), new Rotation2d(0.0)));
   }
 
   /**
