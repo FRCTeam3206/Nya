@@ -17,9 +17,11 @@ import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 import frc.utils.SwerveUtils;
+import java.util.function.DoubleSupplier;
 
 public class DriveSubsystem extends SubsystemBase {
   // Create MAXSwerveModules
@@ -131,8 +133,6 @@ public class DriveSubsystem extends SubsystemBase {
   public void drive(
       double xSpeed, double ySpeed, double rot, boolean fieldRelative, boolean rateLimit) {
 
-    System.out.println(rot);
-
     double xSpeedCommanded;
     double ySpeedCommanded;
 
@@ -205,12 +205,51 @@ public class DriveSubsystem extends SubsystemBase {
     m_rearRight.setDesiredState(swerveModuleStates[3]);
   }
 
+  /**
+   * Creates a command that will drive the robot with dynamic inputs for x, y, and angular speeds.
+   *
+   * <p>Speed suppliers should be specified as lambdas or method references. If joystick inputs need
+   * to have a deadband or input squaring function applied, do so within the lambda function.
+   *
+   * @param xSpeed provides speeds in the X direction (forward).
+   * @param ySpeed provides speeds in the Y direction (sideways).
+   * @param rot provides angular speeds.
+   * @param fieldRelative Whether the provided x and y speeds are relative to the field.
+   * @param rateLimit Whether to enable rate limiting for smoother control.
+   * @return the driving command
+   * @see <a href=
+   *     "https://docs.wpilib.org/en/stable/docs/software/basic-programming/functions-as-data.html">
+   *     https://docs.wpilib.org/en/stable/docs/software/basic-programming/functions-as-data.html
+   *     </a>
+   */
+  public Command driveCommand(
+      DoubleSupplier xSpeed,
+      DoubleSupplier ySpeed,
+      DoubleSupplier rot,
+      boolean fieldRelative,
+      boolean rateLimit) {
+    return run(
+        () -> {
+          drive(
+              xSpeed.getAsDouble(),
+              ySpeed.getAsDouble(),
+              rot.getAsDouble(),
+              fieldRelative,
+              rateLimit);
+        });
+  }
+
   /** Sets the wheels into an X formation to prevent movement. */
   public void setX() {
     m_frontLeft.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
     m_frontRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
     m_rearLeft.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
     m_rearRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
+  }
+
+  /** Creates a command that continually sets the wheels into an X formation to prevent movement. */
+  public Command setXCommand() {
+    return run(this::setX);
   }
 
   /**
