@@ -133,8 +133,6 @@ public class DriveSubsystem extends SubsystemBase {
   public void drive(
       double xSpeed, double ySpeed, double rot, boolean fieldRelative, boolean rateLimit) {
 
-    System.out.println(rot);
-
     double xSpeedCommanded;
     double ySpeedCommanded;
 
@@ -219,8 +217,8 @@ public class DriveSubsystem extends SubsystemBase {
    * @param fieldRelative Whether the provided x and y speeds are relative to the field.
    * @param rateLimit Whether to enable rate limiting for smoother control.
    * @return the driving command
-   * @see <a
-   *     href="https://docs.wpilib.org/en/stable/docs/software/basic-programming/functions-as-data.html">
+   * @see <a href=
+   *     "https://docs.wpilib.org/en/stable/docs/software/basic-programming/functions-as-data.html">
    *     https://docs.wpilib.org/en/stable/docs/software/basic-programming/functions-as-data.html
    *     </a>
    */
