@@ -94,7 +94,7 @@ public class MAXSwerveModule {
     // you
     // may need to tune them for your own robot!
     m_turningPIDController.setP(ModuleConstants.kTurningP);
-    SmartDashboard.putNumber("Turn P", 1);
+    // SmartDashboard.putNumber("Turn P", 1);
     m_turningPIDController.setI(ModuleConstants.kTurningI);
     m_turningPIDController.setD(ModuleConstants.kTurningD);
     m_turningPIDController.setFF(ModuleConstants.kTurningFF);
@@ -149,7 +149,8 @@ public class MAXSwerveModule {
    */
   public void setDesiredState(SwerveModuleState desiredState) {
     // Apply chassis angular offset to the desired state.
-    m_turningPIDController.setP(SmartDashboard.getNumber("Turn P", 1)); // currently at 4.5
+    // m_turningPIDController.setP(SmartDashboard.getNumber("Turn P", 1)); //
+    // currently at 4.5
     SwerveModuleState correctedDesiredState = new SwerveModuleState();
     correctedDesiredState.speedMetersPerSecond = desiredState.speedMetersPerSecond;
     correctedDesiredState.angle = desiredState.angle.plus(Rotation2d.fromRadians(m_chassisAngularOffset));
