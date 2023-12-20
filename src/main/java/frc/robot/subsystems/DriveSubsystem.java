@@ -121,6 +121,10 @@ public class DriveSubsystem extends SubsystemBase {
         pose);
   }
 
+  public void resetDirection() {
+    resetOdometry(new Pose2d(getPose().getTranslation(), new Rotation2d(0.0)));
+  }
+
   /**
    * Method to drive the robot using joystick info.
    *
