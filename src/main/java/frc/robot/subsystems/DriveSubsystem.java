@@ -21,9 +21,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 import frc.utils.SwerveUtils;
+import io.github.oblarg.oblog.Loggable;
+import io.github.oblarg.oblog.annotations.Log;
 import java.util.function.DoubleSupplier;
 
-public class DriveSubsystem extends SubsystemBase {
+public class DriveSubsystem extends SubsystemBase implements Loggable {
   // Create MAXSwerveModules
   private final MAXSwerveModule m_frontLeft =
       new MAXSwerveModule(
@@ -53,15 +55,15 @@ public class DriveSubsystem extends SubsystemBase {
   private final AHRS ahrs = new AHRS(SPI.Port.kMXP);
 
   // Slew rate filter variables for controlling lateral acceleration
-  private double m_currentRotation = 0.0;
-  private double m_currentTranslationDir = 0.0;
-  private double m_currentTranslationMag = 0.0;
+  @Log private double m_currentRotation = 0.0;
+  @Log private double m_currentTranslationDir = 0.0;
+  @Log private double m_currentTranslationMag = 0.0;
 
   private SlewRateLimiter m_magLimiter = new SlewRateLimiter(DriveConstants.kMagnitudeSlewRate);
   private SlewRateLimiter m_rotLimiter = new SlewRateLimiter(DriveConstants.kRotationalSlewRate);
   private double m_prevTime = WPIUtilJNI.now() * 1e-6;
 
-  private Field2d m_field = new Field2d();
+  @Log private Field2d m_field = new Field2d();
 
   // Odometry class for tracking robot pose
   SwerveDriveOdometry m_odometry =
