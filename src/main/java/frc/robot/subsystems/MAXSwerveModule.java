@@ -13,6 +13,7 @@ import com.revrobotics.SparkMaxPIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.ModuleConstants;
 
 public class MAXSwerveModule {
@@ -62,7 +63,8 @@ public class MAXSwerveModule {
     m_turningEncoder.setPositionConversionFactor(ModuleConstants.kTurningEncoderPositionFactor);
     m_turningEncoder.setVelocityConversionFactor(ModuleConstants.kTurningEncoderVelocityFactor);
 
-    // Invert the turning encoder, since the output shaft rotates in the opposite direction of
+    // Invert the turning encoder, since the output shaft rotates in the opposite
+    // direction of
     // the steering motor in the MAXSwerve Module.
     m_turningEncoder.setInverted(ModuleConstants.kTurningEncoderInverted);
 
@@ -76,18 +78,24 @@ public class MAXSwerveModule {
     m_turningPIDController.setPositionPIDWrappingMaxInput(
         ModuleConstants.kTurningEncoderPositionPIDMaxInput);
 
-    // Set the PID gains for the driving motor. Note these are example gains, and you
+    // Set the PID gains for the driving motor. Note these are example gains, and
+    // you
     // may need to tune them for your own robot!
-    m_drivingPIDController.setP(ModuleConstants.kDrivingP);
+    SmartDashboard.putNumber("P term for driving PID", 0.04);
+    m_drivingPIDController.setP(
+        SmartDashboard.getNumber("P term for driving PID", 0.04)); // ModuleConstants.kDrivingP
     m_drivingPIDController.setI(ModuleConstants.kDrivingI);
     m_drivingPIDController.setD(ModuleConstants.kDrivingD);
     m_drivingPIDController.setFF(ModuleConstants.kDrivingFF);
     m_drivingPIDController.setOutputRange(
         ModuleConstants.kDrivingMinOutput, ModuleConstants.kDrivingMaxOutput);
 
-    // Set the PID gains for the turning motor. Note these are example gains, and you
+    // Set the PID gains for the turning motor. Note these are example gains, and
+    // you
     // may need to tune them for your own robot!
-    m_turningPIDController.setP(ModuleConstants.kTurningP);
+    SmartDashboard.putNumber("P term for turning PID", 1.0);
+    m_turningPIDController.setP(
+        SmartDashboard.getNumber("P term for turning PID", 1.0)); // ModuleConstants.kTurningP
     m_turningPIDController.setI(ModuleConstants.kTurningI);
     m_turningPIDController.setD(ModuleConstants.kTurningD);
     m_turningPIDController.setFF(ModuleConstants.kTurningFF);
@@ -159,6 +167,11 @@ public class MAXSwerveModule {
         optimizedDesiredState.angle.getRadians(), CANSparkMax.ControlType.kPosition);
 
     m_desiredState = desiredState;
+
+    m_drivingPIDController.setP(
+        SmartDashboard.getNumber("P term for driving PID", 0.04)); // ModuleConstants.kDrivingP
+    m_turningPIDController.setP(
+        SmartDashboard.getNumber("P term for turning PID", 1.0)); // ModuleConstants.kTurningP
   }
 
   /** Zeroes all the SwerveModule encoders. */

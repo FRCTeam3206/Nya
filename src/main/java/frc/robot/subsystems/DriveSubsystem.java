@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
 import frc.utils.SwerveUtils;
 import java.util.function.DoubleSupplier;
@@ -203,6 +204,17 @@ public class DriveSubsystem extends SubsystemBase {
     m_frontRight.setDesiredState(swerveModuleStates[1]);
     m_rearLeft.setDesiredState(swerveModuleStates[2]);
     m_rearRight.setDesiredState(swerveModuleStates[3]);
+
+    double xVelocityReal =
+        Constants.DriveConstants.kDriveKinematics.toChassisSpeeds(swerveModuleStates)
+            .vyMetersPerSecond;
+    double yVelocityReal =
+        Constants.DriveConstants.kDriveKinematics.toChassisSpeeds(swerveModuleStates)
+            .vxMetersPerSecond;
+    double velocityReal = Constants.DistanceFormula(xVelocityReal, yVelocityReal);
+    SmartDashboard.putNumberArray(
+        "Velocity",
+        new double[] {Constants.DistanceFormula(xSpeedDelivered, ySpeedDelivered), velocityReal});
   }
 
   /**
