@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.6033845477106068,
-        "y": 4.974424214183664
+        "x": 1.8864017364398376,
+        "y": 4.96522040316808
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.2441784727379286,
-        "y": 4.974424214183664
+        "x": 2.52719566146716,
+        "y": 4.96522040316808
       },
       "isLocked": false,
       "linkedName": "ScoreCubeHere"
@@ -60,7 +60,13 @@
       "linkedName": "CubePickup"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1.1500000000000001,
+      "rotationDegrees": -90.0,
+      "rotateFast": false
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
@@ -71,7 +77,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0,
+    "rotation": 0.0,
     "rotateFast": false
   },
   "reversed": false,

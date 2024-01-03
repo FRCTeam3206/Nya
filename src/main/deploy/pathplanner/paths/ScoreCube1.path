@@ -32,19 +32,25 @@
     },
     {
       "anchor": {
-        "x": 1.6719972954924507,
-        "y": 4.962988756220023
+        "x": 1.8864017364398376,
+        "y": 4.96522040316808
       },
       "prevControl": {
-        "x": 2.724059428147387,
-        "y": 4.905811466401819
+        "x": 2.9384638690947735,
+        "y": 4.908043113349876
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "ScoreCubeHere"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1.15,
+      "rotationDegrees": -90.0,
+      "rotateFast": false
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
