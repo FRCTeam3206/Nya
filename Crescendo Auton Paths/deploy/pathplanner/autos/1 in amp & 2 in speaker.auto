@@ -1,0 +1,43 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.8175856037849787,
+      "y": 7.647176264396981
+    },
+    "rotation": 0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Amp to top note"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Top note to speaker"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Speaker to center note"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Center note to speaker"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}
